@@ -31,7 +31,7 @@ local function Resolution()
 	SetupText(
 		"Choose a layout",
 		"Pick the screen you are configuring now. You can rerun this installer or use /tukuiapply later.",
-		"4K Desktop targets 3840x2160. 1600p Laptop targets the Zephyrus-style 2560x1600 layout.",
+		"4K Desktop targets 3840x2160. 1600p Laptop targets the 2560x1600 layout.",
 		"Both presets use the same TukUI proportions; only scale and mover positions differ."
 	)
 	local f = _G.PluginInstallFrame
@@ -40,22 +40,19 @@ local function Resolution()
 	f.Option1:SetScript("OnClick", function()
 		NS:ApplyProfile("desktop")
 		MarkInstalled("desktop")
-		NS.Print("4K Desktop preset applied. Continue to review the finish page, then reload.")
+		NS.Print("4K Desktop preset applied. Continue to Finish, then reload.")
 	end)
 	f.Option2:Show()
 	f.Option2:SetText("1600p Laptop")
 	f.Option2:SetScript("OnClick", function()
 		NS:ApplyProfile("laptop")
 		MarkInstalled("laptop")
-		NS.Print("1600p Laptop preset applied. Continue to review the finish page, then reload.")
+		NS.Print("1600p Laptop preset applied. Continue to Finish, then reload.")
 	end)
 end
 
 local function Finish()
-	-- Reaching the final page also counts as completion. This covers using ElvUI's
-	-- normal Continue button instead of our optional reload button.
 	NS.DB.installComplete = true
-
 	SetupText(
 		"Ready to test",
 		"The profile has been written into ElvUI's normal profile database. ElvUI still owns every frame.",
@@ -82,9 +79,8 @@ local installer = {
 }
 
 function NS:QueueInstaller(forceShow)
-	if not forceShow and NS.DB.installComplete then
-		return
-	end
+	-- Manual-only by design. ElvUI's PluginInstaller queue is global and can
+	-- redisplay queued installers after reloads, so we never enqueue at login.
 	if not queued then
 		PI:Queue(installer)
 		queued = true
@@ -93,9 +89,3 @@ function NS:QueueInstaller(forceShow)
 		_G.PluginInstallFrame:Show()
 	end
 end
-
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("PLAYER_LOGIN")
-frame:SetScript("OnEvent", function()
-	NS:QueueInstaller(false)
-end)

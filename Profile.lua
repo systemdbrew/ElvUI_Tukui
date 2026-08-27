@@ -36,7 +36,6 @@ local function ApplyCommon()
 	chat.tabFont = "Expressway"; chat.tabFontSize = 11; chat.tabFontOutline = "OUTLINE"
 	chat.tabSelector = "BOX"; chat.tabSelectorColor = { r=.09,g=.52,b=.82,a=1 }
 
-	-- TukUI-style bottom data strips, using ElvUI's maintained datatext engine.
 	local dt = Ensure(db, "datatexts")
 	dt.font = "Expressway"; dt.fontSize = 11; dt.fontOutline = "OUTLINE"
 	local panels = Ensure(dt, "panels")
@@ -98,7 +97,7 @@ local function ApplyCommon()
 end
 
 local layouts={
-	desktop={uiScale=.70,player="BOTTOM,ElvUIParent,BOTTOM,-235,102",target="BOTTOM,ElvUIParent,BOTTOM,235,102",targettarget="BOTTOM,ElvUIParent,BOTTOM,0,102",pet="BOTTOM,ElvUIParent,BOTTOM,0,176",focus="BOTTOM,ElvUIParent,BOTTOM,-279,316",focustarget="BOTTOM,ElvUIParent,BOTTOM,-279,341",bar1="BOTTOM,ElvUIParent,BOTTOM,0,12",bar2="BOTTOM,ElvUIParent,BOTTOM,-251,12",bar3="BOTTOM,ElvUIParent,BOTTOM,251,12",minimap="TOPRIGHT,ElvUIParent,TOPRIGHT,-10,-10",experience="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,235",honor="BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,235"},
+	desktop={uiScale=.70,player="BOTTOM,ElvUIParent,BOTTOM,-205,106",target="BOTTOM,ElvUIParent,BOTTOM,205,106",targettarget="BOTTOM,ElvUIParent,BOTTOM,0,106",pet="BOTTOM,ElvUIParent,BOTTOM,0,174",focus="BOTTOM,ElvUIParent,BOTTOM,-255,300",focustarget="BOTTOM,ElvUIParent,BOTTOM,-255,325",bar1="BOTTOM,ElvUIParent,BOTTOM,0,14",bar2="BOTTOM,ElvUIParent,BOTTOM,-220,14",bar3="BOTTOM,ElvUIParent,BOTTOM,220,14",minimap="TOPRIGHT,ElvUIParent,TOPRIGHT,-10,-10",experience="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,235",honor="BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,235"},
 	laptop={uiScale=.64,player="BOTTOM,ElvUIParent,BOTTOM,-220,92",target="BOTTOM,ElvUIParent,BOTTOM,220,92",targettarget="BOTTOM,ElvUIParent,BOTTOM,0,92",pet="BOTTOM,ElvUIParent,BOTTOM,0,160",focus="BOTTOM,ElvUIParent,BOTTOM,-255,285",focustarget="BOTTOM,ElvUIParent,BOTTOM,-255,308",bar1="BOTTOM,ElvUIParent,BOTTOM,0,10",bar2="BOTTOM,ElvUIParent,BOTTOM,-235,10",bar3="BOTTOM,ElvUIParent,BOTTOM,235,10",minimap="TOPRIGHT,ElvUIParent,TOPRIGHT,-8,-8",experience="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,235",honor="BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,235"}
 }
 

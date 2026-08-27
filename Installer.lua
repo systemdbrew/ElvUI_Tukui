@@ -13,6 +13,11 @@ local function SetupText(subtitle, d1, d2, d3)
 	f.Desc3:SetText(d3 or "")
 end
 
+local function MarkInstalled(preset)
+	NS.DB.installComplete = true
+	NS.DB.preset = preset
+end
+
 local function Welcome()
 	SetupText(
 		"TukUI HUD for ElvUI",
@@ -34,19 +39,23 @@ local function Resolution()
 	f.Option1:SetText("4K Desktop")
 	f.Option1:SetScript("OnClick", function()
 		NS:ApplyProfile("desktop")
-		NS.DB.preset = "desktop"
-		NS.Print("4K Desktop preset applied.")
+		MarkInstalled("desktop")
+		NS.Print("4K Desktop preset applied. Continue to review the finish page, then reload.")
 	end)
 	f.Option2:Show()
 	f.Option2:SetText("1600p Laptop")
 	f.Option2:SetScript("OnClick", function()
 		NS:ApplyProfile("laptop")
-		NS.DB.preset = "laptop"
-		NS.Print("1600p Laptop preset applied.")
+		MarkInstalled("laptop")
+		NS.Print("1600p Laptop preset applied. Continue to review the finish page, then reload.")
 	end)
 end
 
 local function Finish()
+	-- Reaching the final page also counts as completion. This covers using ElvUI's
+	-- normal Continue button instead of our optional reload button.
+	NS.DB.installComplete = true
+
 	SetupText(
 		"Ready to test",
 		"The profile has been written into ElvUI's normal profile database. ElvUI still owns every frame.",
@@ -58,6 +67,7 @@ local function Finish()
 	f.Option1:SetText("Finish & Reload")
 	f.Option1:SetScript("OnClick", function()
 		NS.DB.installComplete = true
+		f:Hide()
 		ReloadUI()
 	end)
 end

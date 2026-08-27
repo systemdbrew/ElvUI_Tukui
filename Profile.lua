@@ -42,8 +42,9 @@ local function ApplyCommon()
 	chat.fade = false
 	chat.scrollDownInterval = 3
 
-	-- TukUI puts a thin XP/status bar directly above each chat panel. Keep
-	-- ElvUI's maintained databars, but use TukUI's 448x6 geometry.
+	-- TukUI has two thin configurable status bars above the chat panels.
+	-- Use ElvUI's maintained XP/Honor databars for those two slots and turn
+	-- off the extra default databars that otherwise appear in the center HUD.
 	local databars = Ensure(db, "databars")
 	local experience = Ensure(databars, "experience")
 	experience.enable = true
@@ -63,6 +64,10 @@ local function ApplyCommon()
 	honor.textFormat = "NONE"
 	honor.showBubbles = false
 	honor.mouseover = false
+
+	Ensure(databars, "reputation").enable = false
+	Ensure(databars, "azerite").enable = false
+	Ensure(databars, "threat").enable = false
 
 	-- TukUI's three compact 6x2 button blocks.
 	local ab = Ensure(db, "actionbar")

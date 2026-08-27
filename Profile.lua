@@ -94,7 +94,7 @@ local function ApplyCommon()
 
 		local name = Ensure(f, "name")
 		name.position = "CENTER"
-		name.text_format = unit == "player" and "[name:medium]" or "[name:medium]"
+		name.text_format = "[name:medium]"
 
 		local portrait = Ensure(f, "portrait")
 		portrait.enable = false
@@ -105,6 +105,15 @@ local function ApplyCommon()
 		castbar.height = 21
 		castbar.icon = true
 		castbar.iconAttached = false
+
+		-- ElvUI expects attachTo to be a region point (TOP, CENTER, etc.) and
+		-- attachToObject to name the unit-frame object. Keep these explicit so
+		-- an older profile value cannot turn "Health" into a SetPoint region.
+		local raidicon = Ensure(f, "raidicon")
+		raidicon.attachTo = "TOP"
+		raidicon.attachToObject = "Health"
+		raidicon.xOffset = 0
+		raidicon.yOffset = 2
 	end
 
 	local player = units.player

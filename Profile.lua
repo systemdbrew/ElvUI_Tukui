@@ -72,16 +72,23 @@ local function ApplyCommon()
 		local power=Ensure(f,"power"); power.enable=true; power.height=6; power.position="LEFT"; power.xOffset=4; power.yOffset=0; power.text_format=""; power.attachTextTo="InfoPanel"; power.detachFromFrame=false
 		local name=Ensure(f,"name"); name.position="LEFT"; name.xOffset=4; name.yOffset=0; name.attachTextTo="InfoPanel"; name.text_format="[level] [name:medium]"
 		Ensure(f,"portrait").enable=false
-		local cast=Ensure(f,"castbar"); cast.enable=true; cast.width=250; cast.height=21; cast.icon=true; cast.iconAttached=false; cast.timeToHold=0
+		local cast=Ensure(f,"castbar"); cast.enable=true; cast.width=250; cast.height=18; cast.icon=true; cast.iconAttached=true; cast.iconSize=18; cast.format="CURRENTMAX"; cast.timeToHold=0; cast.spark=true
 		local raid=Ensure(f,"raidicon"); raid.attachTo="TOP"; raid.attachToObject="Health"; raid.xOffset=0; raid.yOffset=2
 	end
 	local player=units.player; local classbar=Ensure(player,"classbar"); classbar.enable=true; classbar.height=6; classbar.detachFromFrame=false; classbar.autoHide=true
-	local pbuffs=Ensure(player,"buffs"); pbuffs.enable=true; pbuffs.perrow=8; pbuffs.numrows=1; pbuffs.sizeOverride=22; pbuffs.attachTo="FRAME"; pbuffs.anchorPoint="TOPLEFT"; pbuffs.growthX="RIGHT"; pbuffs.growthY="UP"
-	local pdebuffs=Ensure(player,"debuffs"); pdebuffs.enable=true; pdebuffs.perrow=8; pdebuffs.numrows=1; pdebuffs.sizeOverride=22
+	local pbuffs=Ensure(player,"buffs"); pbuffs.enable=true; pbuffs.perrow=8; pbuffs.numrows=1; pbuffs.sizeOverride=22; pbuffs.attachTo="FRAME"; pbuffs.anchorPoint="TOPRIGHT"; pbuffs.growthX="LEFT"; pbuffs.growthY="UP"; pbuffs.yOffset=2; pbuffs.priority="PlayerBuffs,TurtleBuffs"
+	local pdebuffs=Ensure(player,"debuffs"); pdebuffs.enable=true; pdebuffs.perrow=8; pdebuffs.numrows=1; pdebuffs.sizeOverride=22; pdebuffs.attachTo="FRAME"; pdebuffs.anchorPoint="TOPLEFT"; pdebuffs.growthX="RIGHT"; pdebuffs.growthY="UP"; pdebuffs.yOffset=26
 	local target=units.target
-	local tbuffs=Ensure(target,"buffs"); tbuffs.enable=true; tbuffs.perrow=8; tbuffs.numrows=1; tbuffs.sizeOverride=22
-	local tdebuffs=Ensure(target,"debuffs"); tdebuffs.enable=true; tdebuffs.perrow=8; tdebuffs.numrows=1; tdebuffs.sizeOverride=22; tdebuffs.priority="Blacklist,Personal,RaidDebuffs"
-	local tot=Ensure(units,"targettarget"); tot.enable=true; tot.width=116; tot.height=30; Ensure(tot,"portrait").enable=false
+	local tbuffs=Ensure(target,"buffs"); tbuffs.enable=true; tbuffs.perrow=8; tbuffs.numrows=1; tbuffs.sizeOverride=22; tbuffs.attachTo="FRAME"; tbuffs.anchorPoint="TOPRIGHT"; tbuffs.growthX="LEFT"; tbuffs.growthY="UP"; tbuffs.yOffset=26
+	local tdebuffs=Ensure(target,"debuffs"); tdebuffs.enable=true; tdebuffs.perrow=8; tdebuffs.numrows=1; tdebuffs.sizeOverride=22; tdebuffs.attachTo="FRAME"; tdebuffs.anchorPoint="TOPLEFT"; tdebuffs.growthX="RIGHT"; tdebuffs.growthY="UP"; tdebuffs.yOffset=2; tdebuffs.priority="Blacklist,Personal,RaidDebuffs"
+	local tot=Ensure(units,"targettarget"); tot.enable=true; tot.width=116; tot.height=24; Ensure(tot,"portrait").enable=false
+	local totInfo=Ensure(tot,"infoPanel"); totInfo.enable=false
+	local totHealth=Ensure(tot,"health"); totHealth.text_format=""; totHealth.frequentUpdates=true
+	local totPower=Ensure(tot,"power"); totPower.enable=false
+	local totName=Ensure(tot,"name"); totName.position="CENTER"; totName.xOffset=0; totName.yOffset=0; totName.text_format="[name:short]"
+	local totCast=Ensure(tot,"castbar"); totCast.enable=false
+	local totBuffs=Ensure(tot,"buffs"); totBuffs.enable=false
+	local totDebuffs=Ensure(tot,"debuffs"); totDebuffs.enable=false
 	local pet=Ensure(units,"pet"); pet.enable=true; pet.width=130; pet.height=36; Ensure(pet,"portrait").enable=false
 	local focus=Ensure(units,"focus"); focus.enable=true; focus.width=164; focus.height=20; Ensure(focus,"portrait").enable=false
 	local focusTarget=Ensure(units,"focustarget"); focusTarget.enable=true; focusTarget.width=164; focusTarget.height=20; Ensure(focusTarget,"portrait").enable=false

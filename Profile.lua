@@ -19,22 +19,15 @@ local function ApplyCommon()
 	local cooldown = Ensure(fonts, "cooldown")
 	cooldown.enable = true; cooldown.font = "Expressway"; cooldown.size = 12; cooldown.outline = "OUTLINE"
 
-	-- ElvUI's actual cooldown countdown text uses db.cooldown.<module>,
-	-- not general.fonts.cooldown. Set the modules we use to TukUI-sized text.
 	local cooldowns = Ensure(db, "cooldown")
 	cooldowns.enable = true
 	for _, module in ipairs({ "global", "actionbar", "auras", "unitframe", "nameplates", "targetaura" }) do
 		local cd = cooldowns[module]
-		if type(cd) == "table" then
-			cd.font = "Expressway"
-			cd.fontSize = 12
-			cd.fontOutline = "OUTLINE"
-		end
+		if type(cd) == "table" then cd.font = "Expressway"; cd.fontSize = 12; cd.fontOutline = "OUTLINE" end
 	end
 
 	general.backdropcolor = { r=.11,g=.11,b=.11,a=1 }; general.backdropfadecolor = { r=.06,g=.06,b=.06,a=.8 }; general.bordercolor = { r=0,g=0,b=0,a=1 }
 	general.bottomPanel = false
-
 	local minimap = Ensure(general, "minimap")
 	minimap.size = 160; minimap.circle = false; minimap.locationText = "MOUSEOVER"
 	minimap.locationFont = "Expressway"; minimap.locationFontSize = 12; minimap.locationFontOutline = "OUTLINE"
@@ -53,28 +46,18 @@ local function ApplyCommon()
 	chat.tabFont = "Expressway"; chat.tabFontSize = 11; chat.tabFontOutline = "OUTLINE"
 	chat.tabSelector = "BOX"; chat.tabSelectorColor = { r=.09,g=.52,b=.82,a=1 }
 
-	local dt = Ensure(db, "datatexts")
-	dt.font = "Expressway"; dt.fontSize = 11; dt.fontOutline = "OUTLINE"
+	local dt = Ensure(db, "datatexts"); dt.font = "Expressway"; dt.fontSize = 11; dt.fontOutline = "OUTLINE"
 	local panels = Ensure(dt, "panels")
-	local left = Ensure(panels, "LeftChatDataPanel")
-	left.enable = true; left[1] = "Guild"; left[2] = "Durability"; left[3] = "Friends"
-	left.backdrop = true; left.panelTransparency = true; left.border = true
-	local right = Ensure(panels, "RightChatDataPanel")
-	right.enable = true; right[1] = "System"; right[2] = "Time"; right[3] = "Gold"
-	right.backdrop = true; right.panelTransparency = true; right.border = true
+	local left = Ensure(panels, "LeftChatDataPanel"); left.enable = true; left[1] = "Guild"; left[2] = "Durability"; left[3] = "Friends"; left.backdrop = true; left.panelTransparency = true; left.border = true
+	local right = Ensure(panels, "RightChatDataPanel"); right.enable = true; right[1] = "System"; right[2] = "Time"; right[3] = "Gold"; right.backdrop = true; right.panelTransparency = true; right.border = true
 
 	local databars = Ensure(db, "databars")
-	local experience = Ensure(databars, "experience")
-	experience.enable = true; experience.width = 448; experience.height = 6; experience.orientation = "HORIZONTAL"; experience.textFormat = "NONE"; experience.showBubbles = false; experience.showLevel = false; experience.mouseover = false
-	local honor = Ensure(databars, "honor")
-	honor.enable = true; honor.width = 448; honor.height = 6; honor.orientation = "HORIZONTAL"; honor.textFormat = "NONE"; honor.showBubbles = false; honor.mouseover = false
+	local experience = Ensure(databars, "experience"); experience.enable = true; experience.width = 448; experience.height = 6; experience.orientation = "HORIZONTAL"; experience.textFormat = "NONE"; experience.showBubbles = false; experience.showLevel = false; experience.mouseover = false
+	local honor = Ensure(databars, "honor"); honor.enable = true; honor.width = 448; honor.height = 6; honor.orientation = "HORIZONTAL"; honor.textFormat = "NONE"; honor.showBubbles = false; honor.mouseover = false
 	Ensure(databars, "reputation").enable = false; Ensure(databars, "azerite").enable = false; Ensure(databars, "threat").enable = false
 
-	local ab = Ensure(db, "actionbar")
-	ab.font = "Expressway"; ab.fontOutline = "OUTLINE"; ab.hotkeyText = false; ab.macroText = false; ab.transparent = false
-	for i=1,3 do
-		local bar=Ensure(ab,"bar"..i); bar.enabled=true; bar.buttons=12; bar.buttonsPerRow=6; bar.buttonSize=32; bar.buttonSpacing=2; bar.backdrop=false; bar.backdropSpacing=2; bar.visibility="[petbattle] hide; show"; bar.alpha=1
-	end
+	local ab = Ensure(db, "actionbar"); ab.font = "Expressway"; ab.fontOutline = "OUTLINE"; ab.hotkeyText = false; ab.macroText = false; ab.transparent = false
+	for i=1,3 do local bar=Ensure(ab,"bar"..i); bar.enabled=true; bar.buttons=12; bar.buttonsPerRow=6; bar.buttonSize=32; bar.buttonSpacing=2; bar.backdrop=false; bar.backdropSpacing=2; bar.visibility="[petbattle] hide; show"; bar.alpha=1 end
 	for i=4,6 do Ensure(ab,"bar"..i).enabled=false end
 	local stance=Ensure(ab,"stanceBar"); stance.enabled=true; stance.buttonSize=24; stance.buttonSpacing=2; stance.style="darkenInactive"
 	local petbar=Ensure(ab,"barPet"); petbar.enabled=true; petbar.buttonSize=24; petbar.buttonSpacing=2; petbar.buttonsPerRow=10
@@ -110,14 +93,26 @@ local function ApplyCommon()
 	local focus=Ensure(units,"focus"); focus.enable=true; focus.width=164; focus.height=20; Ensure(focus,"portrait").enable=false
 	local focusTarget=Ensure(units,"focustarget"); focusTarget.enable=true; focusTarget.width=164; focusTarget.height=20; Ensure(focusTarget,"portrait").enable=false
 
-	local np=Ensure(db,"nameplates"); np.statusbar="ElvUI Norm"; np.font="Expressway"; np.fontSize=12; np.fontOutline="OUTLINE"; np.clampToScreen=true
+	-- TukUI-style nameplates: compact health bar, name above, level at the edge,
+	-- castbar directly below, and only useful player-applied debuffs displayed.
+	local np=Ensure(db,"nameplates")
+	np.statusbar="ElvUI Norm"; np.font="Expressway"; np.fontSize=11; np.fontOutline="OUTLINE"
+	np.clampToScreen=true; np.fadeIn=true; np.highlight=true; np.thinBorders=true
+	np.overlapH=.8; np.overlapV=1.1; np.lowHealthThreshold=.4
+	local threat=Ensure(np,"threat"); threat.enable=true; threat.useThreatColor=true; threat.useThreatClassification=true; threat.beingTankedByPet=true; threat.beingTankedByTank=true; threat.goodScale=1; threat.badScale=1
+	local click=Ensure(np,"clickSize"); click.width=128; click.height=30; click.enemyWidth=128; click.enemyHeight=30; click.friendlyWidth=128; click.friendlyHeight=30
 	local npcUnits=Ensure(np,"units")
 	for _,key in ipairs({"FRIENDLY_NPC","ENEMY_NPC"}) do
-		local n=Ensure(npcUnits,key); n.width=128; n.height=14
-		local hp=Ensure(n,"health"); hp.enable=true; hp.height=14
-		local name=Ensure(n,"name"); name.enable=true; name.font="Expressway"; name.fontSize=12; name.fontOutline="OUTLINE"
+		local n=Ensure(npcUnits,key); n.enable=true; n.width=128; n.height=14
+		local hp=Ensure(n,"health"); hp.enable=true; hp.height=14; hp.text_format=""; hp.position="CENTER"
+		local name=Ensure(n,"name"); name.enable=true; name.font="Expressway"; name.fontSize=11; name.fontOutline="OUTLINE"; name.position="TOPLEFT"; name.xOffset=0; name.yOffset=3; name.format="[name:medium]"
+		local level=Ensure(n,"level"); level.enable=true; level.font="Expressway"; level.fontSize=10; level.fontOutline="OUTLINE"; level.position="TOPRIGHT"; level.xOffset=0; level.yOffset=3; level.format="[difficultycolor][level]"
+		local raid=Ensure(n,"raidTargetIndicator"); raid.enable=true; raid.size=18; raid.position="TOP"; raid.xOffset=0; raid.yOffset=14
 	end
-	local enemy=Ensure(npcUnits,"ENEMY_NPC"); local cb=Ensure(enemy,"castbar"); cb.enable=true; cb.height=10; cb.iconPosition="RIGHT"
+	local enemy=Ensure(npcUnits,"ENEMY_NPC")
+	local cb=Ensure(enemy,"castbar"); cb.enable=true; cb.width=128; cb.height=8; cb.font="Expressway"; cb.fontSize=10; cb.fontOutline="OUTLINE"; cb.textPosition="BELOW"; cb.iconPosition="RIGHT"; cb.iconSize=20; cb.showIcon=true; cb.yOffset=-8; cb.castTimeFormat="CURRENT"; cb.channelTimeFormat="CURRENT"; cb.timeToHold=0; cb.smoothbars=false
+	local debuffs=Ensure(enemy,"debuffs"); debuffs.enable=true; debuffs.numAuras=5; debuffs.numRows=1; debuffs.size=22; debuffs.font="Expressway"; debuffs.fontSize=10; debuffs.fontOutline="OUTLINE"; debuffs.anchorPoint="BOTTOMLEFT"; debuffs.growthX="RIGHT"; debuffs.growthY="UP"; debuffs.xOffset=0; debuffs.yOffset=4; debuffs.priority="Blacklist,Personal"
+	local buffs=Ensure(enemy,"buffs"); buffs.enable=false
 end
 
 local layouts={

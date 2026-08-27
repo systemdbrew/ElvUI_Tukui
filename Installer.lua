@@ -34,12 +34,14 @@ local function Resolution()
 	f.Option1:SetText("4K Desktop")
 	f.Option1:SetScript("OnClick", function()
 		NS:ApplyProfile("desktop")
+		NS.DB.preset = "desktop"
 		NS.Print("4K Desktop preset applied.")
 	end)
 	f.Option2:Show()
 	f.Option2:SetText("1600p Laptop")
 	f.Option2:SetScript("OnClick", function()
 		NS:ApplyProfile("laptop")
+		NS.DB.preset = "laptop"
 		NS.Print("1600p Laptop preset applied.")
 	end)
 end
@@ -53,8 +55,11 @@ local function Finish()
 	)
 	local f = _G.PluginInstallFrame
 	f.Option1:Show()
-	f.Option1:SetText("Reload UI")
-	f.Option1:SetScript("OnClick", ReloadUI)
+	f.Option1:SetText("Finish & Reload")
+	f.Option1:SetScript("OnClick", function()
+		NS.DB.installComplete = true
+		ReloadUI()
+	end)
 end
 
 local installer = {
@@ -67,6 +72,9 @@ local installer = {
 }
 
 function NS:QueueInstaller(forceShow)
+	if not forceShow and NS.DB.installComplete then
+		return
+	end
 	if not queued then
 		PI:Queue(installer)
 		queued = true

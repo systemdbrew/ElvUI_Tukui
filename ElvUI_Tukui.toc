@@ -9,4 +9,5 @@
 Core.lua
 Chat.lua
 Profile.lua
+NameFix.lua
 Installer.lua

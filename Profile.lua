@@ -14,7 +14,7 @@ end
 local function ApplyCommon()
 	local db = E.db
 
-	-- TukUI visual language: dark panels, black borders, Expressway-style text.
+	-- Keep ElvUI as the engine, but use TukUI's visual language.
 	local general = Ensure(db, "general")
 	general.font = "Expressway"
 	general.fontSize = 12
@@ -29,6 +29,7 @@ local function ApplyCommon()
 	minimap.circle = false
 	minimap.locationText = "MOUSEOVER"
 
+	-- TukUI defaults: 450x204 chat panels with an opaque-ish dark backdrop.
 	local chat = Ensure(db, "chat")
 	chat.panelWidth = 450
 	chat.panelHeight = 204
@@ -41,6 +42,7 @@ local function ApplyCommon()
 	chat.fade = false
 	chat.scrollDownInterval = 3
 
+	-- TukUI uses three 6x2 blocks along the bottom at x=-251/0/+251, y=12.
 	local ab = Ensure(db, "actionbar")
 	ab.font = "Expressway"
 	ab.fontOutline = "OUTLINE"
@@ -68,13 +70,20 @@ local function ApplyCommon()
 	uf.smoothbars = false
 	local units = Ensure(uf, "units")
 
+	-- TukUI's Player and Target frames are 250x57: 28px health, 6px power,
+	-- and a 21px information/cast panel along the bottom.
 	for _, unit in ipairs({ "player", "target" }) do
 		local f = Ensure(units, unit)
 		f.enable = true
 		f.width = 250
-		f.height = 56
+		f.height = 57
 		f.orientation = "LEFT"
 		f.smartAuraPosition = "DISABLED"
+
+		local infoPanel = Ensure(f, "infoPanel")
+		infoPanel.enable = true
+		infoPanel.height = 21
+		infoPanel.transparent = false
 
 		local health = Ensure(f, "health")
 		health.position = "TOP"
@@ -106,9 +115,8 @@ local function ApplyCommon()
 		castbar.icon = true
 		castbar.iconAttached = false
 
-		-- ElvUI expects attachTo to be a region point (TOP, CENTER, etc.) and
-		-- attachToObject to name the unit-frame object. Keep these explicit so
-		-- an older profile value cannot turn "Health" into a SetPoint region.
+		-- ElvUI expects attachTo to be a region point and attachToObject to
+		-- identify the unit-frame element.
 		local raidicon = Ensure(f, "raidicon")
 		raidicon.attachTo = "TOP"
 		raidicon.attachToObject = "Health"
@@ -124,8 +132,23 @@ local function ApplyCommon()
 
 	local tot = Ensure(units, "targettarget")
 	tot.enable = true
-	tot.width = 120
-	tot.height = 28
+	tot.width = 130
+	tot.height = 36
+
+	local pet = Ensure(units, "pet")
+	pet.enable = true
+	pet.width = 130
+	pet.height = 36
+
+	local focus = Ensure(units, "focus")
+	focus.enable = true
+	focus.width = 164
+	focus.height = 20
+
+	local focusTarget = Ensure(units, "focustarget")
+	focusTarget.enable = true
+	focusTarget.width = 164
+	focusTarget.height = 20
 
 	local np = Ensure(db, "nameplates")
 	np.statusbar = "ElvUI Norm"
@@ -143,22 +166,30 @@ end
 local layouts = {
 	desktop = {
 		uiScale = 0.70,
-		player = "BOTTOM,ElvUIParent,BOTTOM,-260,175",
-		target = "BOTTOM,ElvUIParent,BOTTOM,260,175",
-		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,165",
-		bar1 = "BOTTOM,ElvUIParent,BOTTOM,0,38",
-		bar2 = "BOTTOM,ElvUIParent,BOTTOM,0,110",
-		bar3 = "BOTTOM,ElvUIParent,BOTTOM,0,182",
+		-- Exact TukUI default HUD anchors, translated to ElvUI movers.
+		player = "BOTTOM,ElvUIParent,BOTTOM,-235,102",
+		target = "BOTTOM,ElvUIParent,BOTTOM,235,102",
+		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,102",
+		pet = "BOTTOM,ElvUIParent,BOTTOM,0,176",
+		focus = "BOTTOM,ElvUIParent,BOTTOM,-279,316",
+		focustarget = "BOTTOM,ElvUIParent,BOTTOM,-279,341",
+		bar1 = "BOTTOM,ElvUIParent,BOTTOM,0,12",
+		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-251,12",
+		bar3 = "BOTTOM,ElvUIParent,BOTTOM,251,12",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-10,-10",
 	},
 	laptop = {
 		uiScale = 0.64,
-		player = "BOTTOM,ElvUIParent,BOTTOM,-230,155",
-		target = "BOTTOM,ElvUIParent,BOTTOM,230,155",
-		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,145",
-		bar1 = "BOTTOM,ElvUIParent,BOTTOM,0,34",
-		bar2 = "BOTTOM,ElvUIParent,BOTTOM,0,100",
-		bar3 = "BOTTOM,ElvUIParent,BOTTOM,0,166",
+		-- Same TukUI proportions, pulled inward slightly for 2560x1600.
+		player = "BOTTOM,ElvUIParent,BOTTOM,-220,92",
+		target = "BOTTOM,ElvUIParent,BOTTOM,220,92",
+		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,92",
+		pet = "BOTTOM,ElvUIParent,BOTTOM,0,160",
+		focus = "BOTTOM,ElvUIParent,BOTTOM,-255,285",
+		focustarget = "BOTTOM,ElvUIParent,BOTTOM,-255,308",
+		bar1 = "BOTTOM,ElvUIParent,BOTTOM,0,10",
+		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-235,10",
+		bar3 = "BOTTOM,ElvUIParent,BOTTOM,235,10",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-8,-8",
 	},
 }
@@ -173,6 +204,9 @@ function NS:ApplyProfile(preset)
 	SetMover("ElvUF_PlayerMover", layout.player)
 	SetMover("ElvUF_TargetMover", layout.target)
 	SetMover("ElvUF_TargetTargetMover", layout.targettarget)
+	SetMover("ElvUF_PetMover", layout.pet)
+	SetMover("ElvUF_FocusMover", layout.focus)
+	SetMover("ElvUF_FocusTargetMover", layout.focustarget)
 	SetMover("ElvAB_1", layout.bar1)
 	SetMover("ElvAB_2", layout.bar2)
 	SetMover("ElvAB_3", layout.bar3)

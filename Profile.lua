@@ -18,6 +18,20 @@ local function ApplyCommon()
 	local fonts = Ensure(general, "fonts")
 	local cooldown = Ensure(fonts, "cooldown")
 	cooldown.enable = true; cooldown.font = "Expressway"; cooldown.size = 12; cooldown.outline = "OUTLINE"
+
+	-- ElvUI's actual cooldown countdown text uses db.cooldown.<module>,
+	-- not general.fonts.cooldown. Set the modules we use to TukUI-sized text.
+	local cooldowns = Ensure(db, "cooldown")
+	cooldowns.enable = true
+	for _, module in ipairs({ "global", "actionbar", "auras", "unitframe", "nameplates", "targetaura" }) do
+		local cd = cooldowns[module]
+		if type(cd) == "table" then
+			cd.font = "Expressway"
+			cd.fontSize = 12
+			cd.fontOutline = "OUTLINE"
+		end
+	end
+
 	general.backdropcolor = { r=.11,g=.11,b=.11,a=1 }; general.backdropfadecolor = { r=.06,g=.06,b=.06,a=.8 }; general.bordercolor = { r=0,g=0,b=0,a=1 }
 	general.bottomPanel = false
 

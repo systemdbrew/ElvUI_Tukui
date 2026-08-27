@@ -209,8 +209,8 @@ local layouts = {
 		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-251,12",
 		bar3 = "BOTTOM,ElvUIParent,BOTTOM,251,12",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-10,-10",
-		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,218",
-		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,218",
+		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,226",
+		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,226",
 	},
 	laptop = {
 		uiScale = 0.64,
@@ -224,8 +224,8 @@ local layouts = {
 		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-235,10",
 		bar3 = "BOTTOM,ElvUIParent,BOTTOM,235,10",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-8,-8",
-		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,218",
-		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,218",
+		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,226",
+		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,226",
 	},
 }
 

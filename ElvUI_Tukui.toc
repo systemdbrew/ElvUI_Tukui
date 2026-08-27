@@ -7,5 +7,6 @@
 ## SavedVariables: ElvUI_TukuiDB
 
 Core.lua
+Chat.lua
 Profile.lua
 Installer.lua

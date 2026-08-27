@@ -56,7 +56,7 @@ local function ApplyCommon()
 	local ab = Ensure(db, "actionbar")
 	ab.font = "Expressway"; ab.fontOutline = "OUTLINE"; ab.hotkeyText = false; ab.macroText = false; ab.transparent = false
 	for i=1,3 do
-		local bar=Ensure(ab,"bar"..i); bar.enabled=true; bar.buttons=12; bar.buttonsPerRow=6; bar.buttonSize=32; bar.buttonSpacing=2; bar.backdrop=true; bar.backdropSpacing=2; bar.visibility="[petbattle] hide; show"; bar.alpha=1
+		local bar=Ensure(ab,"bar"..i); bar.enabled=true; bar.buttons=12; bar.buttonsPerRow=6; bar.buttonSize=32; bar.buttonSpacing=2; bar.backdrop=false; bar.backdropSpacing=2; bar.visibility="[petbattle] hide; show"; bar.alpha=1
 	end
 	for i=4,6 do Ensure(ab,"bar"..i).enabled=false end
 	local stance=Ensure(ab,"stanceBar"); stance.enabled=true; stance.buttonSize=24; stance.buttonSpacing=2; stance.style="darkenInactive"
@@ -81,7 +81,7 @@ local function ApplyCommon()
 	local target=units.target
 	local tbuffs=Ensure(target,"buffs"); tbuffs.enable=true; tbuffs.perrow=8; tbuffs.numrows=1; tbuffs.sizeOverride=22
 	local tdebuffs=Ensure(target,"debuffs"); tdebuffs.enable=true; tdebuffs.perrow=8; tdebuffs.numrows=1; tdebuffs.sizeOverride=22; tdebuffs.priority="Blacklist,Personal,RaidDebuffs"
-	local tot=Ensure(units,"targettarget"); tot.enable=true; tot.width=130; tot.height=36; Ensure(tot,"portrait").enable=false
+	local tot=Ensure(units,"targettarget"); tot.enable=true; tot.width=116; tot.height=30; Ensure(tot,"portrait").enable=false
 	local pet=Ensure(units,"pet"); pet.enable=true; pet.width=130; pet.height=36; Ensure(pet,"portrait").enable=false
 	local focus=Ensure(units,"focus"); focus.enable=true; focus.width=164; focus.height=20; Ensure(focus,"portrait").enable=false
 	local focusTarget=Ensure(units,"focustarget"); focusTarget.enable=true; focusTarget.width=164; focusTarget.height=20; Ensure(focusTarget,"portrait").enable=false

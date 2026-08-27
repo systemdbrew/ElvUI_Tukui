@@ -14,7 +14,7 @@ end
 local function ApplyCommon()
 	local db = E.db
 
-	-- Keep ElvUI as the engine, but use TukUI's visual language.
+	-- Keep ElvUI as the maintained engine, while reproducing TukUI's HUD.
 	local general = Ensure(db, "general")
 	general.font = "Expressway"
 	general.fontSize = 12
@@ -29,7 +29,7 @@ local function ApplyCommon()
 	minimap.circle = false
 	minimap.locationText = "MOUSEOVER"
 
-	-- TukUI defaults: 450x204 chat panels with an opaque-ish dark backdrop.
+	-- TukUI defaults: 450x204 chat panels anchored in the bottom corners.
 	local chat = Ensure(db, "chat")
 	chat.panelWidth = 450
 	chat.panelHeight = 204
@@ -42,7 +42,7 @@ local function ApplyCommon()
 	chat.fade = false
 	chat.scrollDownInterval = 3
 
-	-- TukUI uses three 6x2 blocks along the bottom at x=-251/0/+251, y=12.
+	-- TukUI's three compact 6x2 button blocks.
 	local ab = Ensure(db, "actionbar")
 	ab.font = "Expressway"
 	ab.fontOutline = "OUTLINE"
@@ -55,8 +55,9 @@ local function ApplyCommon()
 		bar.buttons = 12
 		bar.buttonsPerRow = 6
 		bar.buttonSize = 32
-		bar.buttonSpacing = 4
+		bar.buttonSpacing = 2
 		bar.backdrop = true
+		bar.backdropSpacing = 2
 		bar.visibility = "[petbattle] hide; show"
 	end
 	for i = 4, 6 do
@@ -70,8 +71,8 @@ local function ApplyCommon()
 	uf.smoothbars = false
 	local units = Ensure(uf, "units")
 
-	-- TukUI's Player and Target frames are 250x57: 28px health, 6px power,
-	-- and a 21px information/cast panel along the bottom.
+	-- TukUI Player/Target geometry is 250x57: 28 health, 6 power,
+	-- one pixel separator and a 21px information panel.
 	for _, unit in ipairs({ "player", "target" }) do
 		local f = Ensure(units, unit)
 		f.enable = true
@@ -86,28 +87,35 @@ local function ApplyCommon()
 		infoPanel.transparent = false
 
 		local health = Ensure(f, "health")
-		health.position = "TOP"
-		health.xOffset = 0
+		health.position = "RIGHT"
+		health.xOffset = -4
 		health.yOffset = 0
 		health.text_format = "[health:current:shortvalue]"
-		health.attachTextTo = "Health"
+		health.attachTextTo = "InfoPanel"
 		health.frequentUpdates = true
 
 		local power = Ensure(f, "power")
 		power.enable = true
 		power.height = 6
-		power.position = "BOTTOM"
-		power.xOffset = 0
+		power.position = "LEFT"
+		power.xOffset = 4
 		power.yOffset = 0
 		power.text_format = ""
+		power.attachTextTo = "InfoPanel"
+		power.detachFromFrame = false
 
 		local name = Ensure(f, "name")
-		name.position = "CENTER"
-		name.text_format = "[name:medium]"
+		name.position = "LEFT"
+		name.xOffset = 4
+		name.yOffset = 0
+		name.attachTextTo = "InfoPanel"
+		name.text_format = "[level] [name:medium]"
 
 		local portrait = Ensure(f, "portrait")
 		portrait.enable = false
 
+		-- TukUI draws the cast over the 21px lower panel rather than making
+		-- another permanent chunk of the unit frame.
 		local castbar = Ensure(f, "castbar")
 		castbar.enable = true
 		castbar.width = 250
@@ -115,8 +123,6 @@ local function ApplyCommon()
 		castbar.icon = true
 		castbar.iconAttached = false
 
-		-- ElvUI expects attachTo to be a region point and attachToObject to
-		-- identify the unit-frame element.
 		local raidicon = Ensure(f, "raidicon")
 		raidicon.attachTo = "TOP"
 		raidicon.attachToObject = "Health"
@@ -124,26 +130,36 @@ local function ApplyCommon()
 		raidicon.yOffset = 2
 	end
 
+	-- TukUI hides the player's name in its old Name region, but the lower
+	-- panel still reads as "level name" on the HUD. The settings above put
+	-- that information in ElvUI's maintained InfoPanel instead.
 	local player = units.player
 	local classbar = Ensure(player, "classbar")
 	classbar.enable = true
-	classbar.height = 8
+	classbar.height = 6
 	classbar.detachFromFrame = false
+	classbar.autoHide = true
 
 	local tot = Ensure(units, "targettarget")
 	tot.enable = true
 	tot.width = 130
 	tot.height = 36
+	local totPortrait = Ensure(tot, "portrait")
+	totPortrait.enable = false
 
 	local pet = Ensure(units, "pet")
 	pet.enable = true
 	pet.width = 130
 	pet.height = 36
+	local petPortrait = Ensure(pet, "portrait")
+	petPortrait.enable = false
 
 	local focus = Ensure(units, "focus")
 	focus.enable = true
 	focus.width = 164
 	focus.height = 20
+	local focusPortrait = Ensure(focus, "portrait")
+	focusPortrait.enable = false
 
 	local focusTarget = Ensure(units, "focustarget")
 	focusTarget.enable = true
@@ -166,7 +182,6 @@ end
 local layouts = {
 	desktop = {
 		uiScale = 0.70,
-		-- Exact TukUI default HUD anchors, translated to ElvUI movers.
 		player = "BOTTOM,ElvUIParent,BOTTOM,-235,102",
 		target = "BOTTOM,ElvUIParent,BOTTOM,235,102",
 		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,102",
@@ -180,7 +195,6 @@ local layouts = {
 	},
 	laptop = {
 		uiScale = 0.64,
-		-- Same TukUI proportions, pulled inward slightly for 2560x1600.
 		player = "BOTTOM,ElvUIParent,BOTTOM,-220,92",
 		target = "BOTTOM,ElvUIParent,BOTTOM,220,92",
 		targettarget = "BOTTOM,ElvUIParent,BOTTOM,0,92",

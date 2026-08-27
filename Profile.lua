@@ -93,11 +93,11 @@ local function ApplyCommon()
 		local raid=Ensure(f,"raidicon"); raid.attachTo="TOP"; raid.attachToObject="Health"; raid.xOffset=0; raid.yOffset=2
 	end
 	local player=units.player; local classbar=Ensure(player,"classbar"); classbar.enable=true; classbar.height=6; classbar.detachFromFrame=false; classbar.autoHide=true
-	local pbuffs=Ensure(player,"buffs"); pbuffs.enable=true; pbuffs.perrow=8; pbuffs.numrows=1; pbuffs.sizeOverride=22; pbuffs.attachTo="FRAME"; pbuffs.anchorPoint="TOPRIGHT"; pbuffs.growthX="LEFT"; pbuffs.growthY="UP"; pbuffs.yOffset=2; pbuffs.priority="PlayerBuffs,TurtleBuffs"
-	local pdebuffs=Ensure(player,"debuffs"); pdebuffs.enable=true; pdebuffs.perrow=8; pdebuffs.numrows=1; pdebuffs.sizeOverride=22; pdebuffs.attachTo="FRAME"; pdebuffs.anchorPoint="TOPLEFT"; pdebuffs.growthX="RIGHT"; pdebuffs.growthY="UP"; pdebuffs.yOffset=26
+	local pbuffs=Ensure(player,"buffs"); pbuffs.enable=true; pbuffs.perrow=8; pbuffs.numrows=1; pbuffs.sizeOverride=28; pbuffs.attachTo="FRAME"; pbuffs.anchorPoint="TOPRIGHT"; pbuffs.growthX="LEFT"; pbuffs.growthY="UP"; pbuffs.yOffset=2; pbuffs.priority="PlayerBuffs,TurtleBuffs"
+	local pdebuffs=Ensure(player,"debuffs"); pdebuffs.enable=true; pdebuffs.perrow=8; pdebuffs.numrows=1; pdebuffs.sizeOverride=28; pdebuffs.attachTo="FRAME"; pdebuffs.anchorPoint="TOPLEFT"; pdebuffs.growthX="RIGHT"; pdebuffs.growthY="UP"; pdebuffs.yOffset=26
 	local target=units.target
-	local tbuffs=Ensure(target,"buffs"); tbuffs.enable=true; tbuffs.perrow=8; tbuffs.numrows=1; tbuffs.sizeOverride=22; tbuffs.attachTo="FRAME"; tbuffs.anchorPoint="TOPRIGHT"; tbuffs.growthX="LEFT"; tbuffs.growthY="UP"; tbuffs.yOffset=26
-	local tdebuffs=Ensure(target,"debuffs"); tdebuffs.enable=true; tdebuffs.perrow=8; tdebuffs.numrows=1; tdebuffs.sizeOverride=22; tdebuffs.attachTo="FRAME"; tdebuffs.anchorPoint="TOPLEFT"; tdebuffs.growthX="RIGHT"; tdebuffs.growthY="UP"; tdebuffs.yOffset=2; tdebuffs.priority="Blacklist,Personal,RaidDebuffs"
+	local tbuffs=Ensure(target,"buffs"); tbuffs.enable=true; tbuffs.perrow=8; tbuffs.numrows=1; tbuffs.sizeOverride=28; tbuffs.attachTo="FRAME"; tbuffs.anchorPoint="TOPRIGHT"; tbuffs.growthX="LEFT"; tbuffs.growthY="UP"; tbuffs.yOffset=26
+	local tdebuffs=Ensure(target,"debuffs"); tdebuffs.enable=true; tdebuffs.perrow=8; tdebuffs.numrows=1; tdebuffs.sizeOverride=28; tdebuffs.attachTo="FRAME"; tdebuffs.anchorPoint="TOPLEFT"; tdebuffs.growthX="RIGHT"; tdebuffs.growthY="UP"; tdebuffs.yOffset=2; tdebuffs.priority="Blacklist,Personal,RaidDebuffs"
 	local tot=Ensure(units,"targettarget"); tot.enable=true; tot.width=116; tot.height=24; Ensure(tot,"portrait").enable=false
 	local totInfo=Ensure(tot,"infoPanel"); totInfo.enable=false
 	local totHealth=Ensure(tot,"health"); totHealth.text_format=""; totHealth.frequentUpdates=true

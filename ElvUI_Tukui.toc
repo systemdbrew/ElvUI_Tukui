@@ -1,0 +1,11 @@
+## Interface: 120100
+## Title: ElvUI TukUI
+## Notes: TukUI-style HUD preset for ElvUI Retail
+## Author: systemdbrew
+## Version: 0.1.0
+## RequiredDeps: ElvUI
+## SavedVariables: ElvUI_TukuiDB
+
+Core.lua
+Profile.lua
+Installer.lua

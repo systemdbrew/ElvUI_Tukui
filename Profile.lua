@@ -42,6 +42,28 @@ local function ApplyCommon()
 	chat.fade = false
 	chat.scrollDownInterval = 3
 
+	-- TukUI puts a thin XP/status bar directly above each chat panel. Keep
+	-- ElvUI's maintained databars, but use TukUI's 448x6 geometry.
+	local databars = Ensure(db, "databars")
+	local experience = Ensure(databars, "experience")
+	experience.enable = true
+	experience.width = 448
+	experience.height = 6
+	experience.orientation = "HORIZONTAL"
+	experience.textFormat = "NONE"
+	experience.showBubbles = false
+	experience.showLevel = false
+	experience.mouseover = false
+
+	local honor = Ensure(databars, "honor")
+	honor.enable = true
+	honor.width = 448
+	honor.height = 6
+	honor.orientation = "HORIZONTAL"
+	honor.textFormat = "NONE"
+	honor.showBubbles = false
+	honor.mouseover = false
+
 	-- TukUI's three compact 6x2 button blocks.
 	local ab = Ensure(db, "actionbar")
 	ab.font = "Expressway"
@@ -71,8 +93,6 @@ local function ApplyCommon()
 	uf.smoothbars = false
 	local units = Ensure(uf, "units")
 
-	-- TukUI Player/Target geometry is 250x57: 28 health, 6 power,
-	-- one pixel separator and a 21px information panel.
 	for _, unit in ipairs({ "player", "target" }) do
 		local f = Ensure(units, unit)
 		f.enable = true
@@ -114,8 +134,6 @@ local function ApplyCommon()
 		local portrait = Ensure(f, "portrait")
 		portrait.enable = false
 
-		-- TukUI draws the cast over the 21px lower panel rather than making
-		-- another permanent chunk of the unit frame.
 		local castbar = Ensure(f, "castbar")
 		castbar.enable = true
 		castbar.width = 250
@@ -130,9 +148,6 @@ local function ApplyCommon()
 		raidicon.yOffset = 2
 	end
 
-	-- TukUI hides the player's name in its old Name region, but the lower
-	-- panel still reads as "level name" on the HUD. The settings above put
-	-- that information in ElvUI's maintained InfoPanel instead.
 	local player = units.player
 	local classbar = Ensure(player, "classbar")
 	classbar.enable = true
@@ -144,22 +159,19 @@ local function ApplyCommon()
 	tot.enable = true
 	tot.width = 130
 	tot.height = 36
-	local totPortrait = Ensure(tot, "portrait")
-	totPortrait.enable = false
+	Ensure(tot, "portrait").enable = false
 
 	local pet = Ensure(units, "pet")
 	pet.enable = true
 	pet.width = 130
 	pet.height = 36
-	local petPortrait = Ensure(pet, "portrait")
-	petPortrait.enable = false
+	Ensure(pet, "portrait").enable = false
 
 	local focus = Ensure(units, "focus")
 	focus.enable = true
 	focus.width = 164
 	focus.height = 20
-	local focusPortrait = Ensure(focus, "portrait")
-	focusPortrait.enable = false
+	Ensure(focus, "portrait").enable = false
 
 	local focusTarget = Ensure(units, "focustarget")
 	focusTarget.enable = true
@@ -192,6 +204,8 @@ local layouts = {
 		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-251,12",
 		bar3 = "BOTTOM,ElvUIParent,BOTTOM,251,12",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-10,-10",
+		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,218",
+		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,218",
 	},
 	laptop = {
 		uiScale = 0.64,
@@ -205,6 +219,8 @@ local layouts = {
 		bar2 = "BOTTOM,ElvUIParent,BOTTOM,-235,10",
 		bar3 = "BOTTOM,ElvUIParent,BOTTOM,235,10",
 		minimap = "TOPRIGHT,ElvUIParent,TOPRIGHT,-8,-8",
+		experience = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,5,218",
+		honor = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-5,218",
 	},
 }
 
@@ -227,6 +243,12 @@ function NS:ApplyProfile(preset)
 	SetMover("MinimapMover", layout.minimap)
 	SetMover("LeftChatMover", "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,4")
 	SetMover("RightChatMover", "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,4")
+	SetMover("ExperienceBarMover", layout.experience)
+	SetMover("HonorBarMover", layout.honor)
+
+	if NS.ApplyChatLayout then
+		NS:ApplyChatLayout()
+	end
 
 	ElvUI_TukuiDB.preset = preset
 	ElvUI_TukuiDB.version = NS.version

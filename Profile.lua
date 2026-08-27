@@ -15,6 +15,9 @@ local function ApplyCommon()
 	local db = E.db
 	local general = Ensure(db, "general")
 	general.font = "Expressway"; general.fontSize = 12; general.fontStyle = "OUTLINE"
+	local fonts = Ensure(general, "fonts")
+	local cooldown = Ensure(fonts, "cooldown")
+	cooldown.enable = true; cooldown.font = "Expressway"; cooldown.size = 12; cooldown.outline = "OUTLINE"
 	general.backdropcolor = { r=.11,g=.11,b=.11,a=1 }; general.backdropfadecolor = { r=.06,g=.06,b=.06,a=.8 }; general.bordercolor = { r=0,g=0,b=0,a=1 }
 	general.bottomPanel = false
 

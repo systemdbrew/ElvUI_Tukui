@@ -29,6 +29,32 @@ local function RemoveChannel(frame, channel)
 	if remove and channel then remove(frame, channel) end
 end
 
+local function PositionChatFrames(rightChat)
+	-- Match the way current ElvUI positions its two physical chat panes.
+	-- The additional TukUI tabs remain docked into the left pane.
+	if ChatFrame1 then
+		ChatFrame1:ClearAllPoints()
+		if _G.LeftChatToggleButton then
+			ChatFrame1:SetPoint("BOTTOMLEFT", _G.LeftChatToggleButton, "TOPLEFT", 1, 3)
+		elseif _G.LeftChatDataPanel then
+			ChatFrame1:SetPoint("BOTTOMLEFT", _G.LeftChatDataPanel, "TOPLEFT", 1, 3)
+		end
+		FCF_SavePositionAndDimensions(ChatFrame1)
+	end
+
+	if rightChat then
+		FCF_UnDockFrame(rightChat)
+		rightChat:ClearAllPoints()
+		if _G.RightChatDataPanel then
+			rightChat:SetPoint("BOTTOMLEFT", _G.RightChatDataPanel, "TOPLEFT", 1, 3)
+		elseif _G.RightChatPanel then
+			rightChat:SetPoint("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 1, 23)
+		end
+		FCF_SetTabPosition(rightChat, 0)
+		FCF_SavePositionAndDimensions(rightChat)
+	end
+end
+
 function NS:ApplyChatLayout()
 	-- Recreate TukUI's Retail chat organization with current Blizzard chat APIs.
 	-- ElvUI remains responsible for styling and runtime chat behavior.
@@ -62,7 +88,6 @@ function NS:ApplyChatLayout()
 		if frame then FCF_SetChatWindowFontSize(nil, frame, 12) end
 	end
 
-	-- Match TukUI's compact visible tab labels.
 	FCF_SetWindowName(ChatFrame1, "G, S & W")
 	FCF_SetWindowName(ChatFrame2, "Log")
 	FCF_SetWindowName(ChatFrame3, "Voice")
@@ -111,9 +136,7 @@ function NS:ApplyChatLayout()
 	ChangeChatColor("CHANNEL6", 0 / 255, 228 / 255, 0 / 255)
 
 	FCF_SelectDockFrame(ChatFrame1)
-	FCF_SetTabPosition(rightChat, 0)
-	FCF_SavePositionAndDimensions(ChatFrame1)
-	FCF_SavePositionAndDimensions(rightChat)
+	PositionChatFrames(rightChat)
 
 	NS.DB.chatLayoutApplied = true
 end
